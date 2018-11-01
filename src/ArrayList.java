@@ -22,6 +22,7 @@ public class ArrayList<E> {
 		}	
 	}
 
+	private E elements[];
 	private  Node<E> first = null; 
 	private int size = 0; 	
 	public void addFirst(E e) { 
@@ -41,13 +42,37 @@ public class ArrayList<E> {
 	private void recLessThan(Node<E> fr, E e, ArrayList<Pair<E>> result) { 
 		if (fr != null) { 
 			if (((Comparable<E>) fr.getElement()).compareTo(e) < 0)
-				 result.add(fr.getElement());
+				 result.add((Pair<E>) fr.getElement());
 			recLessThan(fr.getNext(), e, result);  // passing reference to result
 		}
 	} 
 
 
 
+
+	public void add(E obj) {
+		if (obj == null){
+			throw new IllegalArgumentException("Argument object cannot be null.");
+		}
+		else {
+			if (this.size == this.elements.length){
+				reAllocate();
+			}
+			this.elements[this.size++] = obj;
+			return;
+		}
+	}
+
+	private void reAllocate() {
+		// create a new array with the twice the size
+		E newElements[] = (E[]) new Object[2*this.elements.length];
+		// copy all values into the new array
+		for (int i=0; i < this.size; ++i){
+			newElements[i] = this.elements[i];
+		}
+		// replace old elmenets with newElements
+		this.elements = newElements;
+	}
 
 	public ArrayList<Pair<E>> consecutiveIncreasingPairs() { 
 		ArrayList<Pair<E>> result = new ArrayList<>();     // and empty ArrayList object
